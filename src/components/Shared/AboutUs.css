@@ -1,0 +1,287 @@
+/* Base Styles */
+.about-us-container {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #2d3748;
+    line-height: 1.6;
+    max-width: 1750px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    
+  }
+  
+  /* Header Section */
+  .about-header {
+    text-align: center;
+    padding: 60px 0 40px;
+    background: linear-gradient(135deg, #6b46c1 0%, #4c51bf 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    font-weight: 800;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+    color: white;
+  }
+  
+  /* Mission Section */
+  .mission-section {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 80px;
+  }
+  
+  .mission-content {
+    flex: 1;
+  }
+  
+  .mission-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #4c51bf;
+  }
+  
+  .mission-content p {
+    font-size: 1.1rem;
+    color: #4a5568;
+  }
+  
+  .mission-image {
+    flex: 1;
+    height: 400px;
+    border-radius: 12px;
+    background: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80') center/cover;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Stats Section */
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stat-item h3 {
+    font-size: 2.5rem;
+    color: #6b46c1;
+    margin-bottom: 8px;
+  }
+  
+  .stat-item p {
+    color: #718096;
+    font-weight: 500;
+  }
+  
+  /* Team Section */
+  .team-section {
+    margin-bottom: 80px;
+  }
+  
+  .team-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #4c51bf;
+  }
+  
+  .team-description {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    color: #4a5568;
+    font-size: 1.1rem;
+  }
+  
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .team-member {
+    text-align: center;
+    background: white;
+    border-radius: 12px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .team-member:hover {
+    transform: translateY(-5px);
+  }
+  
+  .member-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    background-size: cover;
+    background-position: center;
+    border: 4px solid #e9d8fd;
+  }
+  
+  .img1 {
+    background-image: url('https://randomuser.me/api/portraits/women/44.jpg');
+  }
+  
+  .img2 {
+    background-image: url('https://randomuser.me/api/portraits/men/32.jpg');
+  }
+  
+  .img3 {
+    background-image: url('https://randomuser.me/api/portraits/men/75.jpg');
+  }
+  
+  .img4 {
+    background-image: url('https://randomuser.me/api/portraits/women/63.jpg');
+  }
+  
+  .team-member h3 {
+    margin-bottom: 8px;
+    color: #2d3748;
+  }
+  
+  .team-member p {
+    color: #718096;
+    font-weight: 500;
+  }
+  
+  /* Values Section */
+  .values-section {
+    margin-bottom: 80px;
+  }
+  
+  .values-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #4c51bf;
+  }
+  
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .value-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .value-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .value-card h3 {
+    margin-bottom: 15px;
+    color: #2d3748;
+  }
+  
+  .value-card p {
+    color: #4a5568;
+  }
+  
+  /* CTA Section */
+  .cta-section {
+    text-align: center;
+    padding: 60px 40px;
+    background: linear-gradient(135deg, #6b46c1 0%, #4c51bf 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 60px;
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+  
+  .cta-section p {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+  }
+  
+  .cta-button {
+    background: white;
+    color: #6b46c1;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .mission-section {
+      flex-direction: column;
+    }
+    
+    .mission-image {
+      width: 100%;
+    }
+    
+    .about-header h1 {
+      font-size: 2.2rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .stats-section {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .team-grid, .values-grid {
+      grid-template-columns: 1fr;
+    }
+  }

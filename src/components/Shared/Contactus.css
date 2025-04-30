@@ -1,0 +1,352 @@
+/* Modern CSS Variables */
+:root {
+    --tech-primary: #4361ee;
+    --tech-primary-dark: #3a56d4;
+    --tech-secondary: #3f37c9;
+    --tech-accent: #4895ef;
+    --tech-light: #f8f9fa;
+    --tech-dark: #212529;
+    --tech-gray: #6c757d;
+    --tech-light-gray: #e9ecef;
+    --tech-success: #4cc9f0;
+    --tech-border-radius: 12px;
+    --tech-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --tech-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  /* Base Styles */
+  .tech-contact-container {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--tech-dark);
+    line-height: 1.6;
+    max-width: 1780px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+  }
+  
+  /* Header Section */
+  .tech-contact-header {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+    color: white;
+    border-radius: var(--tech-border-radius);
+    margin: 2rem 0 3rem;
+    box-shadow: var(--tech-box-shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tech-contact-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #fbf9fa, #f8f5f8, #ebe9ec);
+  }
+  
+  .tech-contact-title {
+    font-size: 2.75rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  
+  .tech-contact-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.92;
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+  
+  /* Content Layout */
+  .tech-contact-content-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .tech-contact-content-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Form Section */
+  .tech-contact-form-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--tech-border-radius);
+    box-shadow: var(--tech-box-shadow);
+  }
+  
+  .tech-section-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--tech-primary);
+    font-weight: 700;
+  }
+  
+  .tech-contact-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .tech-form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tech-form-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--tech-dark);
+  }
+  
+  .tech-form-input,
+  .tech-form-select,
+  .tech-form-textarea {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--tech-light-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--tech-transition);
+    background-color: var(--tech-light);
+  }
+  
+  .tech-form-input:focus,
+  .tech-form-select:focus,
+  .tech-form-textarea:focus {
+    outline: none;
+    border-color: var(--tech-accent);
+    box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+  }
+  
+  .tech-form-textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+  
+  .tech-form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+  }
+  
+  /* Submit Button */
+  .tech-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--tech-primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--tech-transition);
+    margin-top: 0.5rem;
+  }
+  
+  .tech-submit-button:hover {
+    background: var(--tech-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(67, 97, 238, 0.2);
+  }
+  
+  .tech-button-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .tech-submit-button:hover .tech-button-icon {
+    transform: translateX(3px);
+  }
+  
+  /* Contact Info Section */
+  .tech-contact-info-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-content: start;
+  }
+  
+  .tech-info-card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--tech-border-radius);
+    box-shadow: var(--tech-box-shadow);
+    transition: var(--tech-transition);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+  }
+  
+  .tech-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tech-info-icon-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: rgba(72, 149, 239, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  
+  .tech-info-icon {
+    font-size: 1.5rem;
+    color: var(--tech-accent);
+  }
+  
+  .tech-info-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--tech-dark);
+    font-weight: 700;
+  }
+  
+  .tech-info-text {
+    color: var(--tech-gray);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  /* Map Section */
+  .tech-contact-map-section {
+    margin-bottom: 4rem;
+  }
+  
+  .tech-map-container {
+    height: 450px;
+    border-radius: var(--tech-border-radius);
+    overflow: hidden;
+    box-shadow: var(--tech-box-shadow);
+    position: relative;
+  }
+  
+  .tech-map-placeholder {
+    height: 100%;
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tech-map-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .tech-map-button {
+    background: white;
+    color: var(--tech-primary);
+    border: none;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--tech-transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .tech-map-button:hover {
+    background: var(--tech-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* FAQ Section */
+  .tech-contact-faq-section {
+    margin-bottom: 4rem;
+  }
+  
+  .tech-faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .tech-faq-item {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--tech-border-radius);
+    box-shadow: var(--tech-box-shadow);
+    transition: var(--tech-transition);
+  }
+  
+  .tech-faq-item:hover {
+    transform: translateY(-3px);
+  }
+  
+  .tech-faq-question {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    color: var(--tech-dark);
+    font-weight: 700;
+  }
+  
+  .tech-faq-answer {
+    color: var(--tech-gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .tech-contact-title {
+      font-size: 2.25rem;
+    }
+    
+    .tech-contact-subtitle {
+      font-size: 1.1rem;
+    }
+    
+    .tech-contact-header {
+      padding: 3rem 1.5rem;
+    }
+    
+    .tech-contact-form-section,
+    .tech-info-card {
+      padding: 1.5rem;
+    }
+    
+    .tech-map-container {
+      height: 350px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tech-contact-title {
+      font-size: 2rem;
+    }
+    
+    .tech-contact-container {
+      padding: 0 1rem;
+    }
+    
+    .tech-faq-grid {
+      grid-template-columns: 1fr;
+    }
+  }

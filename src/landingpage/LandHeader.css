@@ -1,0 +1,106 @@
+/* LandHeader.css - Updated for edge-to-edge content */
+
+.land-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #4361ee, #4895ef);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-left: 1rem;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.nav {
+  display: flex;
+  gap: 4.5rem;
+  margin-right: 1rem;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #1a1a2e;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #4361ee;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #4361ee;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.login-btn {
+  padding: 0.5rem 1.5rem;
+  border: 2px solid #4361ee;
+  background-color: transparent;
+  color: #4361ee;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #4361ee;
+  color: #ffffff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .nav {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .land-header {
+    padding: 1rem 0;
+  }
+  
+  .logo {
+    margin-left: 1rem;
+  }
+  
+  .nav {
+    display: none; /* Will be toggled by mobile menu */
+    margin-right: 1rem;
+  }
+}

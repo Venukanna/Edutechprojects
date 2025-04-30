@@ -1,0 +1,161 @@
+/* .upcoming-classes {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+}
+
+.upcoming-classes h2 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.class-card {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  transition: transform 0.2s ease;
+}
+
+.class-card:hover {
+  transform: translateX(5px);
+}
+
+.class-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  padding: var(--spacing-sm);
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.time {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.duration {
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+}
+
+.class-details {
+  flex: 1;
+}
+
+.class-details h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-md);
+}
+
+.class-info {
+  display: flex;
+  gap: var(--spacing-md);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.instructor::before {
+  content: "👨‍🏫";
+  margin-right: var(--spacing-xs);
+}
+
+.room::before {
+  content: "📍";
+  margin-right: var(--spacing-xs);
+}  */
+
+.upcoming-classes {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.upcoming-classes h2 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.class-card {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--bg-secondary);
+}
+
+.class-time {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  min-width: 80px;
+}
+
+.class-details {
+  flex: 1;
+}
+
+.class-details h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-md);
+}
+
+.class-topic {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.class-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.instructor::before {
+  content: "👨‍🏫";
+  margin-right: var(--spacing-xs);
+}
+
+.room::before {
+  content: "📍";
+  margin-right: var(--spacing-xs);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .class-card {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .class-meta {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+}
