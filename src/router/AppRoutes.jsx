@@ -11,7 +11,9 @@ import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
 import Codecompiler from '../Codecompiler/Codecompiler';
 import Faq from '../pages/Faq';
-import MyLiveclasses from "../pages/MyLiveclasses";
+// import MyLiveclasses from "../pages/MyLiveClasses";
+import MyLiveClasses from "../pages/MyLiveClasses";
+
 import NotificationsPanel from '../components/Dashboard/NotificationsPanel';
 import AboutUs from '../components/Shared/AboutUs';
 import ContactUs from '../components/Shared/Contactus'; 
@@ -38,7 +40,9 @@ const AppRoutes = () => {
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/notifications" element={<NotificationsPanel />} />
       <Route path="/Codecompiler" element={<Codecompiler />} />
-      <Route path="/myliveclasses" element={<MyLiveclasses />} />
+      {/* <Route path="/myliveclasses" element={<MyLiveclasses />} /> */}
+      <Route path="/myliveclasses" element={<MyLiveClasses />} />
+
       <Route path="/faq" element={<Faq />} />
       
       {/* Redirect all unmatched routes to not-found */}
