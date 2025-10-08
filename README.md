@@ -1,6 +1,18 @@
+
+
 # Student Dashboard
 
+
 A modern React application for managing student academic activities, including course management, assignments, and class schedules.
+
+## 🌐 Live Demo
+
+Check out the live version of this project here:  
+
+[🚀 View Live Project](https://edutechprojects.onrender.com)  
+
+> Click the link above to explore the fully functional project hosted on Render.
+
 
 ## Features
 
