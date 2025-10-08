@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FaSearch, FaVideo, FaRegClock, FaMapMarkerAlt } from 'react-icons/fa';
 import Footer from '../components/Shared/Footer';
 import Navbar from '../components/Shared/Navbar';
-import './MyLiveClasses.css';
+// import './MyLiveClasses.css';
+ import './MyLiveclasses.css';
 
 const MyLiveClasses = () => {
   const [searchQuery, setSearchQuery] = useState('');
