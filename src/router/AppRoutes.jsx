@@ -41,7 +41,7 @@
 
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import LandingPage from '../landingpage/LandingPage'; // Import your landing page component
+import LandingPage from '../landingpage/LandingPage'; 
 import Dashboard from '../components/Dashboard/Dashboard';
 import Courses from '../pages/Courses';
 import Assignments from '../pages/Assignments';
@@ -53,10 +53,9 @@ import Faq from '../pages/Faq';
 import MyLiveclasses from "../pages/MyLiveClasses";
 import NotificationsPanel from '../components/Dashboard/NotificationsPanel';
 import AboutUs from '../components/Shared/AboutUs';
-import ContactUs from '../components/Shared/Contactus'; // Import your contact us component
-import Mycourses from '../pages/Mycourses'; // Import your MyCourses component
-import Faqs from '../pages/Faqs'; // Import your FAQs component
-
+import ContactUs from '../components/Shared/Contactus'; 
+import Mycourses from '../pages/Mycourses'; 
+import Faqs from '../pages/Faqs'; 
 
 const AppRoutes = () => {
   return (

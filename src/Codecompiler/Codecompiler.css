@@ -1,4 +1,4 @@
-/* CodeCompiler.css */
+CodeCompiler.css
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f3f4f6;
@@ -346,4 +346,12 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
+} */
+
+
+
+.loading-state p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-top: 0.5rem;
 }

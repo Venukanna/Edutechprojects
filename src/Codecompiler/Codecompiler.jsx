@@ -1,25 +1,25 @@
+
 import { useState, useEffect } from "react";
-import "./CodeCompiler.css"; // Assuming you have a CSS file for styles
+import "./CodeCompiler.css";
 import Footer from "../components/Shared/Footer";
 import Navbar from "../components/Shared/Navbar";
 
 const LANGUAGES = [
-  { id: 50, name: "C", icon: "C" },
-  { id: 54, name: "C++", icon: "C++" },
-  { id: 71, name: "Python", icon: "Py" },
-  { id: 62, name: "Java", icon: "Ja" },
-  { id: 63, name: "JavaScript", icon: "JS" },
-  { id: 1, name: "HTML", icon: "HTML" },
+  { id: "java", name: "Java", icon: "Ja" },
+  { id: "python", name: "Python", icon: "Py" },
+  { id: "c", name: "C", icon: "C" },
+  { id: "cpp", name: "C++", icon: "C++" },
+  { id: "javascript", name: "JavaScript", icon: "JS" },
+  { id: "html", name: "HTML", icon: "HTML" },
 ];
 
 export default function CodeCompiler() {
   const [code, setCode] = useState("");
-  const [language, setLanguage] = useState(62); // Default to Java
+  const [language, setLanguage] = useState("java"); // Default to Java
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [theme, setTheme] = useState("light");
   const [outputStatus, setOutputStatus] = useState("idle");
-  const [token, setToken] = useState("");
   const [activeFile, setActiveFile] = useState("html");
   const [isLoading, setIsLoading] = useState(false);
   const [htmlCode, setHtmlCode] = useState(
@@ -63,7 +63,7 @@ export default function CodeCompiler() {
 
   // Updated language code structure validation rules
   const languageValidators = {
-    62: code => {
+    java: code => {
       const hasMainClass = /class\s+Main\s*\{/.test(code);
       const hasMainMethod = /public\s+static\s+void\s+main\s*\(/.test(code);
       
@@ -81,39 +81,39 @@ export default function CodeCompiler() {
       }
       return { isValid: true, message: "" };
     },
-    71: code => {
+    python: code => {
       const isValid = /def\s+\w+|print\(|import\s+/.test(code) && !/class\s+\w+|public\s+static\s+void\s+main/.test(code);
       return {
         isValid,
         message: isValid ? "" : "This doesn't look like Python code. Try using Python syntax like 'print()', 'def', or 'import' statements."
       };
-    }, // Python
-    54: code => {
+    },
+    cpp: code => {
       const isValid = /#include\s+<|int\s+main\s*\(\)/.test(code) && !/std::/.test(code);
       return {
         isValid,
         message: isValid ? "" : "This doesn't look like C++ code. Try using C++ syntax like '#include' or 'int main()'."
       };
-    }, // C++
-    50: code => {
+    },
+    c: code => {
       const isValid = /#include\s+<|int\s+main\s*\(\)/.test(code) && !/std::/.test(code);
       return {
         isValid,
         message: isValid ? "" : "This doesn't look like C code. Try using C syntax like '#include' or 'int main()'."
       };
-    }, // C
-    63: code => {
+    },
+    javascript: code => {
       const isValid = /function\s+\w+|console\.log|let\s+|const\s+|var\s+/.test(code);
       return {
         isValid,
         message: isValid ? "" : "This doesn't look like JavaScript code. Try using JavaScript syntax like 'function', 'console.log', or 'let/const/var'."
       };
-    }, // JavaScript
+    },
   };
 
   // Real-time validation effect
   useEffect(() => {
-    if (language === 1) {
+    if (language === "html") {
       setValidationError("");
       return;
     }
@@ -140,7 +140,7 @@ export default function CodeCompiler() {
       setOutputStatus("error");
       return;
     }
-    if (language === 1) {
+    if (language === "html") {
       try {
         setOutputStatus("running");
         setIsLoading(true);
@@ -194,27 +194,13 @@ export default function CodeCompiler() {
         }
       }
 
-      // Use the code as-is without wrapping in Main class
-      const codeToSubmit = code;
-
-      // UTF-8 encode the source code before base64 encoding
-      const utf8Encode = (str) => {
-        try {
-          return new TextEncoder().encode(str); // Modern browsers
-        } catch (e) {
-          return new TextEncoderLite().encode(str); // Fallback for older browsers
-        }
-      };
-
-      const encodedCode = btoa(String.fromCharCode.apply(null, [...utf8Encode(codeToSubmit)]));
-
       const request = {
-        source_code: encodedCode,
-        language_id: language,
-        stdin: btoa(input),
+        code,
+        language,
+        input
       };
 
-      const response = await fetch("http://localhost:1234/api/judge0/submit", {
+      const response = await fetch("http://localhost:1234/api/execute", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -227,92 +213,21 @@ export default function CodeCompiler() {
         throw new Error(errorData.message || `HTTP ${response.status}`);
       }
 
-      const data = await response.json();
-      if (!data.token) {
-        throw new Error("No submission token received");
+      const result = await response.json();
+      
+      if (result.error) {
+        setOutput(result.error);
+        setOutputStatus("error");
+      } else {
+        setOutput(result.output || "Code executed successfully with no output");
+        setOutputStatus("success");
       }
-
-      setToken(data.token);
-      setOutput("Code submitted. Processing...");
-      await checkResult(data.token);
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error("Execution error:", error);
       setOutput(`Error: ${error.message}`);
       setOutputStatus("error");
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const checkResult = async (token) => {
-    try {
-      let result;
-      let attempts = 0;
-      const maxAttempts = 15;
-      const delay = 2000;
-
-      while (attempts < maxAttempts) {
-        const response = await fetch(
-          `http://localhost:1234/api/judge0/result/${token}`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status} when checking result`);
-        }
-
-        result = await response.json();
-        console.log("Polling result:", result);
-
-        // Safely extract output from any possible field
-        const getOutputText = () => {
-          if (!result) return "No result received";
-
-          // Check all possible output fields
-          const outputSources = [
-            result.stdout,
-            result.stderr,
-            result.compile_output,
-            result.message,
-            result.status?.description
-          ];
-
-          // Find the first non-empty output
-          const output = outputSources.find(text => text && text.trim().length > 0);
-
-          // Handle base64 decoding if needed
-          if (output) {
-            try {
-              // Attempt to decode the output using decodeURIComponent and escape
-              return decodeURIComponent(escape(window.atob(output)));
-            } catch (e) {
-              // If decoding fails, return the original output
-              console.error("Base64 decoding error:", e);
-              return output;
-            }
-          }
-
-          return "No output available";
-        };
-
-        const outputText = getOutputText();
-
-        // Check if execution is complete
-        if (result.status?.id > 2 || outputText !== "No output available") {
-          setOutput(outputText);
-          setOutputStatus(result.status?.id === 3 ? "success" : "error");
-          return;
-        }
-
-        attempts++;
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-
-      setOutput("Execution timed out after 30 seconds");
-      setOutputStatus("error");
-    } catch (error) {
-      console.error("Result check error:", error);
-      setOutput(`Error: ${error.message}`);
-      setOutputStatus("error");
     }
   };
 
@@ -322,12 +237,12 @@ export default function CodeCompiler() {
   };
 
   const renderEditor = () => {
-    if (language !== 1) {
+    if (language !== "html") {
       return (
         <textarea
           placeholder={`// Write your ${
             LANGUAGES.find((l) => l.id === language)?.name || ""
-          } code here...\n${language === 62 ? 'public class YourClassName {\n    public static void main(String[] args) {\n        \n    }\n}' : ''}`}
+          } code here...\n${language === "java" ? 'public class Main {\n    public static void main(String[] args) {\n        \n    }\n}' : ''}`}
           value={code}
           onChange={(e) => setCode(e.target.value)}
           spellCheck="false"
@@ -393,7 +308,7 @@ function example() {
               className={`sidebar-item ${language === lang.id ? "active" : ""}`}
               onClick={() => {
                 setLanguage(lang.id);
-                if (lang.id === 1) setActiveFile("html");
+                if (lang.id === "html") setActiveFile("html");
               }}
               title={lang.name}
             >
@@ -426,9 +341,9 @@ function example() {
               <select
                 value={language}
                 onChange={(e) => {
-                  const newLang = parseInt(e.target.value);
+                  const newLang = e.target.value;
                   setLanguage(newLang);
-                  if (newLang === 1) setActiveFile("html");
+                  if (newLang === "html") setActiveFile("html");
                 }}
               >
                 {LANGUAGES.map((lang) => (
@@ -438,7 +353,7 @@ function example() {
                 ))}
               </select>
             </div>
-            {language === 1 && (
+            {language === "html" && (
               <div className="file-tabs">
                 <button
                   className={activeFile === "html" ? "active" : ""}
@@ -478,7 +393,7 @@ function example() {
             <div className="editor-container">
               <div className="section-header">
                 <span>
-                  {language === 1
+                  {language === "html"
                     ? `Editor (${activeFile})`
                     : "Editor"}
                 </span>
@@ -489,7 +404,7 @@ function example() {
             </div>
 
             <div className="right-side-container">
-              {language !== 1 && (
+              {language !== "html" && (
                 <div className="inputt-container">
                   <div className="section-header">
                     <span>Input (stdin)</span>
@@ -518,7 +433,7 @@ function example() {
                       <div className="spinner"></div>
                       <p>Processing your code...</p>
                     </div>
-                  ) : language === 1 && output ? (
+                  ) : language === "html" && output ? (
                     <iframe
                       title="output"
                       srcDoc={output}
@@ -546,23 +461,439 @@ function example() {
   );
 }
 
-// A simple TextEncoder fallback for older browsers (Safari)
-class TextEncoderLite {
-  encode(string) {
-    let utftext = [];
-    for (let n = 0; n < string.length; n++) {
-      let charcode = string.charCodeAt(n);
-      if (charcode < 128) {
-        utftext.push(charcode);
-      } else if ((charcode > 127) && (charcode < 2048)) {
-        utftext.push((charcode >> 6) | 192);
-        utftext.push((charcode & 63) | 128);
-      } else {
-        utftext.push((charcode >> 12) | 224);
-        utftext.push(((charcode >> 6) & 63) | 128);
-        utftext.push((charcode & 63) | 128);
-      }
-    }
-    return utftext;
-  }
-}
+
+
+// import { useState, useEffect } from "react";
+// import "./CodeCompiler.css";
+// import ReactSandpackPlayground from "../components/ReactSandpackPlayground";
+// import Footer from "../components/Shared/Footer";
+// import Navbar from "../components/Shared/Navbar";
+
+// const LANGUAGES = [
+//   { id: "java", name: "Java", icon: "Ja" },
+//   { id: "python", name: "Python", icon: "Py" },
+//   { id: "c", name: "C", icon: "C" },
+//   { id: "cpp", name: "C++", icon: "C++" },
+//   { id: "javascript", name: "JavaScript", icon: "JS" },
+//   { id: "html", name: "HTML", icon: "HTML" },
+//   { id: "react", name: "React", icon: "⚛️" },
+// ];
+
+// const REACT_FILES = {
+//   "App.js": `export default function App() {
+//   return <h1>Hello world</h1>
+// }`,
+//   "index.js": `import React from "react";
+// import { createRoot } from "react-dom/client";
+// import App from "./App";
+// createRoot(document.getElementById("root")).render(<App />);`,
+//   "package.json": `{
+//   "name": "react-app",
+//   "version": "1.0.0",
+//   "dependencies": {
+//     "react": "^18.2.0",
+//     "react-dom": "^18.2.0"
+//   }
+// }`,
+//   "styles.css": `.title {
+//   color: #2c3e50;
+//   text-align: center;
+//   font-family: Arial, sans-serif;
+// }`,
+//   "index.html": `<!DOCTYPE html>
+// <html lang="en">
+//   <head>
+//     <meta charset="UTF-8" />
+//     <title>React Output</title>
+//   </head>
+//   <body>
+//     <div id="root"></div>
+//   </body>
+// </html>`,
+// };
+
+// const REACT_FILE_ORDER = [
+//   "App.js",
+//   "index.js",
+//   "package.json",
+//   "styles.css",
+//   "index.html",
+// ];
+
+// const DEFAULT_CODES = {
+//   java: `public class Main {
+//   public static void main(String[] args) {
+//     System.out.println("Hello world");
+//   }
+// }`,
+//   python: `print("Hello world")`,
+//   c: `#include <stdio.h>
+// int main() {
+//   printf("Hello world\\n");
+//   return 0;
+// }`,
+//   cpp: `#include <iostream>
+// int main() {
+//   std::cout << "Hello world" << std::endl;
+//   return 0;
+// }`,
+//   javascript: `console.log("Hello world");`,
+//   html: `<!DOCTYPE html>
+// <html>
+// <head>
+//   <title>Hello, World!</title>
+//   <style>
+//   .title {
+//     color: #2c3e50;
+//     text-align: center;
+//     font-family: Arial, sans-serif;
+//   }
+//   </style>
+// </head>
+// <body>
+//   <h1 class="title">Hello World!</h1>
+//   <p id="currentTime"></p>
+//   <script>
+//     document.getElementById('currentTime').textContent =
+//       'Current time: ' + new Date().toLocaleTimeString();
+//   </script>
+// </body>
+// </html>`,
+//   react: REACT_FILES["App.js"],
+// };
+
+// export default function CodeCompiler() {
+//   const [language, setLanguage] = useState("java");
+//   const [code, setCode] = useState(DEFAULT_CODES["java"]);
+//   const [input, setInput] = useState("");
+//   const [output, setOutput] = useState("");
+//   const [theme, setTheme] = useState("light");
+//   const [activeFile, setActiveFile] = useState("App.js");
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [htmlCode, setHtmlCode] = useState(DEFAULT_CODES["html"]);
+//   const [cssCode, setCssCode] = useState("");
+//   const [jsCode, setJsCode] = useState("");
+//   const [reactFiles, setReactFiles] = useState({ ...REACT_FILES });
+//   const [validationError, setValidationError] = useState("");
+
+//   // Theme effect
+//   useEffect(() => {
+//     document.body.setAttribute("data-theme", theme);
+//   }, [theme]);
+
+//   // Language change effect
+//   useEffect(() => {
+//     if (language === "react") {
+//       setActiveFile("App.js");
+//       setReactFiles({ ...REACT_FILES });
+//       setCode(REACT_FILES["App.js"]);
+//     } else if (language === "html") {
+//       setActiveFile("html");
+//       setCode(htmlCode);
+//     } else {
+//       setActiveFile(language);
+//       setCode(DEFAULT_CODES[language]);
+//     }
+//     setOutput("");
+//     setValidationError("");
+//   }, [language]);
+
+//   // File tab change effect
+//   useEffect(() => {
+//     if (language === "react" && activeFile) {
+//       setCode(reactFiles[activeFile]);
+//     } else if (language === "html") {
+//       if (activeFile === "html") setCode(htmlCode);
+//       if (activeFile === "css") setCode(cssCode);
+//       if (activeFile === "js") setCode(jsCode);
+//     }
+//   }, [activeFile]);
+
+//   // Validators for some languages
+//   const languageValidators = {
+//     java: code => {
+//       const hasMainClass = /class\s+Main\s*\{/.test(code);
+//       const hasMainMethod = /public\s+static\s+void\s+main\s*\(/.test(code);
+//       if (!hasMainClass) {
+//         return {
+//           isValid: false,
+//           message: "For Java code, use 'Main' as your class name: 'public class Main { ... }'",
+//         };
+//       }
+//       if (!hasMainMethod) {
+//         return {
+//           isValid: false,
+//           message: "Add the main method: 'public static void main(String[] args) { ... }'",
+//         };
+//       }
+//       return { isValid: true, message: "" };
+//     },
+//     python: code => {
+//       const isValid = /def\s+\w+|print\(|import\s+/.test(code) && !/class\s+\w+|public\s+static\s+void\s+main/.test(code);
+//       return {
+//         isValid,
+//         message: isValid ? "" : "This doesn't look like Python code. Try using Python syntax like 'print()', 'def', or 'import' statements."
+//       };
+//     },
+//     cpp: code => {
+//       const isValid = /#include\s+<|int\s+main\s*\(\)/.test(code);
+//       return {
+//         isValid,
+//         message: isValid ? "" : "This doesn't look like C++ code. Try using C++ syntax like '#include' or 'int main()'."
+//       };
+//     },
+//     c: code => {
+//       const isValid = /#include\s+<|int\s+main\s*\(\)/.test(code);
+//       return {
+//         isValid,
+//         message: isValid ? "" : "This doesn't look like C code. Try using C syntax like '#include' or 'int main()'."
+//       };
+//     },
+//     javascript: code => {
+//       const isValid = /function\s+\w+|console\.log|let\s+|const\s+|var\s+/.test(code);
+//       return {
+//         isValid,
+//         message: isValid ? "" : "This doesn't look like JavaScript code. Try using JS syntax like 'console.log()' or 'function ...'."
+//       };
+//     },
+//   };
+
+//   // React file change handler
+//   const handleReactFileChange = (val) => {
+//     setCode(val);
+//     setReactFiles(files => ({ ...files, [activeFile]: val }));
+//   };
+
+//   // HTML/CSS/JS file change handler
+//   const handleHtmlFileChange = (val) => {
+//     if (activeFile === "html") setHtmlCode(val);
+//     if (activeFile === "css") setCssCode(val);
+//     if (activeFile === "js") setJsCode(val);
+//     setCode(val);
+//   };
+
+//   // Run code (backend call for non-React)
+//   const handleRun = async () => {
+//     setIsLoading(true);
+//     setOutput("");
+//     setValidationError("");
+
+//     // Validate code for some languages
+//     if (languageValidators[language]) {
+//       const validation = languageValidators[language](code);
+//       if (!validation.isValid) {
+//         setValidationError(validation.message);
+//         setIsLoading(false);
+//         return;
+//       }
+//     }
+
+//     // Prepare payload for API
+//     let payload;
+//     if (language === "html") {
+//       payload = {
+//         language,
+//         code: htmlCode,
+//         html: htmlCode,
+//         css: cssCode,
+//         js: jsCode,
+//       };
+//     } else if (language === "react") {
+//       // Do nothing: React handled by Sandpack
+//       setIsLoading(false);
+//       return;
+//     } else {
+//       payload = {
+//         language,
+//         code,
+//         input,
+//       };
+//     }
+
+//     // Only call backend for non-React
+//     if (language !== "react") {
+//       try {
+//         const res = await fetch("http://localhost:1234/api/execute", {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify(payload),
+//         });
+//         let data;
+//         try {
+//           data = await res.json();
+//         } catch {
+//           setOutput("Error: Backend did not return valid JSON.");
+//           setIsLoading(false);
+//           return;
+//         }
+//         setOutput(data.output || data.result || data.error || "No output");
+//       } catch (err) {
+//         setOutput("Error: " + err.message);
+//       }
+//     }
+//     setIsLoading(false);
+//   };
+
+//   // Prepare files for Sandpack
+//   const sandpackFiles = {
+//     "/App.js": reactFiles["App.js"],
+//     "/index.js": reactFiles["index.js"],
+//     "/package.json": reactFiles["package.json"],
+//     "/styles.css": reactFiles["styles.css"],
+//     "/index.html": reactFiles["index.html"],
+//   };
+
+//   return (
+//     <div className="code-compiler">
+//       <Navbar />
+//     <div className="compiler-main">
+//       {/* Sidebar */}
+//       <aside className="sidebar">
+//         <div className="sidebar-title">Files</div>
+//         {LANGUAGES.map((lang) => (
+//           <button
+//             key={lang.id}
+//             className={`sidebar-btn${language === lang.id ? " active" : ""}`}
+//             onClick={() => setLanguage(lang.id)}
+//             title={lang.name}
+//           >
+//             {lang.icon}
+//           </button>
+//         ))}
+//       </aside>
+
+//       {/* Editor section */}
+//       <section className="editor-section">
+//         {/* File tabs for React */}
+//         {language === "react" && (
+//           <div className="file-tabs">
+//             {REACT_FILE_ORDER.map((file) => (
+//               <div
+//                 key={file}
+//                 className={`file-tab${activeFile === file ? " active" : ""}`}
+//                 onClick={() => {
+//                   setActiveFile(file);
+//                   setCode(reactFiles[file]);
+//                 }}
+//               >
+//                 {file}
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//         {/* File tabs for HTML */}
+//         {language === "html" && (
+//           <div className="file-tabs">
+//             <div
+//               className={`file-tab${activeFile === "html" ? " active" : ""}`}
+//               onClick={() => setActiveFile("html")}
+//             >
+//               index.html
+//             </div>
+//             <div
+//               className={`file-tab${activeFile === "css" ? " active" : ""}`}
+//               onClick={() => setActiveFile("css")}
+//             >
+//               styles.css
+//             </div>
+//             <div
+//               className={`file-tab${activeFile === "js" ? " active" : ""}`}
+//               onClick={() => setActiveFile("js")}
+//             >
+//               script.js
+//             </div>
+//           </div>
+//         )}
+//         {/* File tab for other languages */}
+//         {language !== "react" && language !== "html" && (
+//           <div className="file-tab single">{language.toUpperCase()}</div>
+//         )}
+
+//         {/* Code editor */}
+//         {language === "react" ? (
+//           <textarea
+//             className="code-editor"
+//             value={code}
+//             onChange={e => handleReactFileChange(e.target.value)}
+//             spellCheck={false}
+//           />
+//         ) : language === "html" ? (
+//           <>
+//             {activeFile === "html" && (
+//               <textarea
+//                 className="code-editor"
+//                 value={htmlCode}
+//                 onChange={e => handleHtmlFileChange(e.target.value)}
+//                 spellCheck={false}
+//               />
+//             )}
+//             {activeFile === "css" && (
+//               <textarea
+//                 className="code-editor"
+//                 value={cssCode}
+//                 onChange={e => handleHtmlFileChange(e.target.value)}
+//                 spellCheck={false}
+//               />
+//             )}
+//             {activeFile === "js" && (
+//               <textarea
+//                 className="code-editor"
+//                 value={jsCode}
+//                 onChange={e => handleHtmlFileChange(e.target.value)}
+//                 spellCheck={false}
+//               />
+//             )}
+//           </>
+//         ) : (
+//           <textarea
+//             className="code-editor"
+//             value={code}
+//             onChange={e => setCode(e.target.value)}
+//             spellCheck={false}
+//           />
+//         )}
+
+//         {/* Input box for stdin */}
+//         <div style={{ marginTop: 8 }}>
+//           <input
+//             type="text"
+//             placeholder="Custom input (stdin)..."
+//             value={input}
+//             onChange={e => setInput(e.target.value)}
+//             style={{ width: "100%", padding: 6, marginBottom: 8 }}
+//           />
+//         </div>
+
+//         {/* Run button and theme toggle */}
+//         <div className="editor-actions">
+//           <button onClick={handleRun} disabled={isLoading || language === "react"}>
+//             {isLoading ? "Running..." : "Run"}
+//           </button>
+//           <button
+//             className="theme-toggle"
+//             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+//             title="Toggle theme"
+//           >
+//             {theme === "light" ? "🌙" : "☀️"}
+//           </button>
+//         </div>
+//         {/* Validation error */}
+//         {validationError && (
+//           <div style={{ color: "red", marginTop: 8 }}>{validationError}</div>
+//         )}
+//       </section>
+
+//       {/* Output section */}
+//       <section className="output-section">
+//         <div className="output-title">Output</div>
+//         {language === "react" ? (
+//           <ReactSandpackPlayground files={sandpackFiles} />
+//         ) : (
+//           <div className="output-area">{output}</div>
+//         )}
+//       </section>
+//     </div>
+//     <Footer />
+//     </div>
+//   );
+// }
