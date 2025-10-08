@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import "./CodeCompiler.css";
+import "./Codecompiler.css";
 import Footer from "../components/Shared/Footer";
 import Navbar from "../components/Shared/Navbar";
 
