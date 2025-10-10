@@ -9,7 +9,7 @@ A modern React application for managing student academic activities, including c
 
 Check out the live version of this project here:  
 
-[🚀 View Live Project](https://edutechprojects.onrender.com)  
+[🚀 View Live Project](https://edutechprojects.vercel.app/)  
 
 > Click the link above to explore the fully functional project hosted on Render.
 
